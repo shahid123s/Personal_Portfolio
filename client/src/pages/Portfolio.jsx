@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import Navbar from '../components/portfolio/Navbar';
 import Hero from '../components/portfolio/Hero';
@@ -45,6 +46,15 @@ const Portfolio = () => {
 
   return (
     <div className="pt-20">
+      <Helmet>
+        <title>{data.profile?.name ? `${data.profile.name} - Portfolio` : 'Portfolio'}</title>
+        <meta name="description" content={data.profile?.bio || 'Professional Portfolio'} />
+        <meta name="keywords" content="portfolio, developer, software engineer, web development" />
+        <meta property="og:title" content={data.profile?.name ? `${data.profile.name} - Portfolio` : 'Portfolio'} />
+        <meta property="og:description" content={data.profile?.bio || 'Professional Portfolio'} />
+        <meta property="og:type" content="website" />
+        {data.profile?.photo && <meta property="og:image" content={data.profile.photo.startsWith('http') ? data.profile.photo : `http://localhost:5001${data.profile.photo}`} />}
+      </Helmet>
       <Navbar profile={data.profile} />
       <main>
         <Hero profile={data.profile} />

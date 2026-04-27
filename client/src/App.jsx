@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import Portfolio from './pages/Portfolio';
@@ -7,8 +8,9 @@ import Dashboard from './pages/admin/Dashboard';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <HelmetProvider>
+      <AuthProvider>
+        <Router>
         <Toaster position="top-right" />
         <Routes>
           <Route path="/" element={<Portfolio />} />
@@ -17,6 +19,7 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
+    </HelmetProvider>
   );
 }
 
