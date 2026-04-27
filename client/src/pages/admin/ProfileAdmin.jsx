@@ -4,8 +4,9 @@ import toast from 'react-hot-toast';
 
 const ProfileAdmin = () => {
   const [formData, setFormData] = useState({
-    name: '', tagline: '', bio: '', email: '', location: '', github: '', linkedin: '', resume: ''
+    name: '', tagline: '', bio: '', email: '', location: '', github: '', linkedin: '', resume: '', photo: ''
   });
+  const [photoFile, setPhotoFile] = useState(null);
 
   useEffect(() => {
     fetchProfile();
@@ -23,8 +24,20 @@ const ProfileAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.put('/profile', formData);
+      const data = new FormData();
+      Object.keys(formData).forEach(key => {
+        data.append(key, formData[key] || '');
+      });
+      if (photoFile) {
+        data.append('photo', photoFile);
+      }
+
+      await api.put('/profile', data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
       toast.success('Profile updated');
+      setPhotoFile(null);
+      fetchProfile();
     } catch (error) {
       toast.error('Failed to update profile');
     }
@@ -34,6 +47,13 @@ const ProfileAdmin = () => {
     <div>
       <h2 className="text-2xl font-h2 mb-6">Manage Profile</h2>
       <form onSubmit={handleSubmit} className="space-y-4 bg-surface-container p-6 max-w-2xl">
+        <div>
+          <label className="block text-sm text-zinc-400 mb-1">Profile Photo</label>
+          <input type="file" onChange={e => setPhotoFile(e.target.files[0])} className="w-full p-2 bg-surface text-on-surface" accept="image/*" />
+          {formData.photo && !photoFile && (
+            <img src={`http://localhost:5001${formData.photo}`} alt="Current Profile" className="mt-2 h-20 w-20 object-cover rounded" />
+          )}
+        </div>
         <div>
           <label className="block text-sm text-zinc-400 mb-1">Name</label>
           <input type="text" value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full p-2 bg-surface text-on-surface" />
