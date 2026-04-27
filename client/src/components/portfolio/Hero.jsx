@@ -45,7 +45,7 @@ const Hero = ({ profile }) => {
             <img 
               className="w-full h-full object-cover grayscale opacity-60" 
               alt="Profile" 
-              src={profile?.photo ? `http://localhost:5000${profile.photo}` : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCt8NwfjPlzfNG6yyFBvvAIdHqXbQ74VpZeT7d_ob_kpRnk0hxWR6_rx2KGLgvKjnSZhzK3WAhdnHemW5mLG8-mJszgC3o9i_zhVf5_8lvYyv6rQUOIDxm_sxRtd6cHcQMKOEdMhJi7PYz0RpVixEqTaGLFx7dsDrLNYpPk1HurFzWRpMEDKyb-WoPUjcboWqi1bRHFCdRHbENDuTsj69XWVVTO8x2Z5zKcTwcLyNLUdvef_HrJLp_-3NM5K6os4_AoZi44BmcN1g'} 
+              src={profile?.photo ? (profile.photo.startsWith('http') ? profile.photo : `http://localhost:5001${profile.photo}`) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCt8NwfjPlzfNG6yyFBvvAIdHqXbQ74VpZeT7d_ob_kpRnk0hxWR6_rx2KGLgvKjnSZhzK3WAhdnHemW5mLG8-mJszgC3o9i_zhVf5_8lvYyv6rQUOIDxm_sxRtd6cHcQMKOEdMhJi7PYz0RpVixEqTaGLFx7dsDrLNYpPk1HurFzWRpMEDKyb-WoPUjcboWqi1bRHFCdRHbENDuTsj69XWVVTO8x2Z5zKcTwcLyNLUdvef_HrJLp_-3NM5K6os4_AoZi44BmcN1g'} 
             />
           </div>
         </motion.div>

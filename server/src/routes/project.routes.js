@@ -6,28 +6,26 @@ const fs = require('fs');
 const Project = require('../models/Project');
 const authMiddleware = require('../middleware/auth.middleware');
 
-// Setup upload directory
-const uploadDir = path.join(__dirname, '../../uploads');
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => {
-    const suffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, 'project-' + suffix + path.extname(file.originalname));
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'portfolio/projects',
+    allowedFormats: ['jpeg', 'png', 'jpg', 'webp'],
   },
 });
 
 const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    const allowed = /jpeg|jpg|png|gif|webp/;
-    const ok =
-      allowed.test(path.extname(file.originalname).toLowerCase()) &&
-      allowed.test(file.mimetype);
-    ok ? cb(null, true) : cb(new Error('Only image files allowed'));
-  },
 });
 
 // GET all projects (public)
@@ -64,7 +62,7 @@ router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
       featured: featured === 'true',
       order: parseInt(order) || 0,
       icon: icon || 'code',
-      image: req.file ? `/uploads/${req.file.filename}` : '',
+      image: req.file ? req.file.path : '',
     });
     await project.save();
     res.status(201).json(project);
@@ -90,11 +88,10 @@ router.put('/:id', authMiddleware, upload.single('image'), async (req, res) => {
     if (icon) project.icon = icon;
 
     if (req.file) {
-      if (project.image) {
-        const oldPath = path.join(__dirname, '../..', project.image);
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      if (project.image && project.image.includes('cloudinary')) {
+        // Optional: delete old image from Cloudinary
       }
-      project.image = `/uploads/${req.file.filename}`;
+      project.image = req.file.path;
     }
 
     await project.save();
@@ -110,9 +107,8 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ message: 'Project not found' });
 
-    if (project.image) {
-      const imgPath = path.join(__dirname, '../..', project.image);
-      if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
+    if (project.image && project.image.includes('cloudinary')) {
+      // Optional: extract public_id and delete from Cloudinary
     }
     await project.deleteOne();
     res.json({ message: 'Project deleted successfully' });

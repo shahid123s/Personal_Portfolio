@@ -5,8 +5,9 @@ import toast from 'react-hot-toast';
 const ProjectsAdmin = () => {
   const [projects, setProjects] = useState([]);
   const [formData, setFormData] = useState({
-    title: '', description: '', techStack: '', githubUrl: '', liveUrl: '', featured: false, order: 0, icon: 'code'
+    title: '', description: '', techStack: '', githubUrl: '', liveUrl: '', featured: false, order: 0, icon: 'code', image: ''
   });
+  const [imageFile, setImageFile] = useState(null);
   const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
@@ -25,15 +26,31 @@ const ProjectsAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const payload = { ...formData, techStack: JSON.stringify(formData.techStack.split(',').map(s => s.trim())) };
+      const data = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'techStack') {
+          data.append(key, JSON.stringify(formData.techStack.split(',').map(s => s.trim())));
+        } else {
+          data.append(key, formData[key]);
+        }
+      });
+      
+      if (imageFile) {
+        data.append('image', imageFile);
+      }
+
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
       if (editingId) {
-        await api.put(`/projects/${editingId}`, payload);
+        await api.put(`/projects/${editingId}`, data, config);
         toast.success('Project updated');
       } else {
-        await api.post('/projects', payload);
+        await api.post('/projects', data, config);
         toast.success('Project created');
       }
-      setFormData({ title: '', description: '', techStack: '', githubUrl: '', liveUrl: '', featured: false, order: 0, icon: 'code' });
+      
+      setFormData({ title: '', description: '', techStack: '', githubUrl: '', liveUrl: '', featured: false, order: 0, icon: 'code', image: '' });
+      setImageFile(null);
       setEditingId(null);
       fetchProjects();
     } catch (error) {
@@ -42,7 +59,8 @@ const ProjectsAdmin = () => {
   };
 
   const handleEdit = (p) => {
-    setFormData({ ...p, techStack: p.techStack.join(', ') });
+    setFormData({ ...p, techStack: p.techStack ? p.techStack.join(', ') : '' });
+    setImageFile(null);
     setEditingId(p._id);
   };
 
@@ -75,8 +93,21 @@ const ProjectsAdmin = () => {
           </label>
           <input type="number" placeholder="Order" value={formData.order} onChange={e => setFormData({...formData, order: e.target.value})} className="w-24 p-2 bg-surface text-on-surface" />
         </div>
+        <div className="flex gap-4">
+          <div className="flex-1">
+            <label className="block text-sm text-zinc-400 mb-1">Project Image</label>
+            <input type="file" onChange={e => setImageFile(e.target.files[0])} className="w-full p-2 bg-surface text-on-surface" accept="image/*" />
+            {formData.image && !imageFile && (
+              <img src={formData.image.startsWith('http') ? formData.image : `http://localhost:5001${formData.image}`} alt="Preview" className="mt-2 h-16 w-32 object-cover rounded" />
+            )}
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm text-zinc-400 mb-1">Icon (Material Symbols)</label>
+            <input type="text" placeholder="e.g. computer" value={formData.icon} onChange={e => setFormData({...formData, icon: e.target.value})} className="w-full p-2 bg-surface text-on-surface" />
+          </div>
+        </div>
         <button type="submit" className="px-6 py-2 bg-indigo-500 text-white">{editingId ? 'Update' : 'Create'} Project</button>
-        {editingId && <button type="button" onClick={() => { setEditingId(null); setFormData({ title: '', description: '', techStack: '', githubUrl: '', liveUrl: '', featured: false, order: 0, icon: 'code' }) }} className="ml-4 text-zinc-400">Cancel</button>}
+        {editingId && <button type="button" onClick={() => { setEditingId(null); setFormData({ title: '', description: '', techStack: '', githubUrl: '', liveUrl: '', featured: false, order: 0, icon: 'code', image: '' }); setImageFile(null); }} className="ml-4 text-zinc-400">Cancel</button>}
       </form>
 
       <div className="space-y-4">

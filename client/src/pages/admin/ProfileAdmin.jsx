@@ -51,7 +51,7 @@ const ProfileAdmin = () => {
           <label className="block text-sm text-zinc-400 mb-1">Profile Photo</label>
           <input type="file" onChange={e => setPhotoFile(e.target.files[0])} className="w-full p-2 bg-surface text-on-surface" accept="image/*" />
           {formData.photo && !photoFile && (
-            <img src={`http://localhost:5001${formData.photo}`} alt="Current Profile" className="mt-2 h-20 w-20 object-cover rounded" />
+            <img src={formData.photo.startsWith('http') ? formData.photo : `http://localhost:5001${formData.photo}`} alt="Current Profile" className="mt-2 h-20 w-20 object-cover rounded" />
           )}
         </div>
         <div>

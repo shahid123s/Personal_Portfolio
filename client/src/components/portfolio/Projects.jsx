@@ -34,7 +34,7 @@ const Projects = ({ projects }) => {
               <img 
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
                 alt={featuredProject.title} 
-                src={featuredProject.image ? `http://localhost:5000${featuredProject.image}` : 'https://lh3.googleusercontent.com/aida-public/AB6AXuDkDk-PJVOYZou13bYcNPkSJhIw1CmhrI6NY7t-H6GAoGJa2vG7ZDCFYPGo3DZTr8ZRRU08xuIwSxlK1dCWyAOt0AduRjimSl4YAypnUGtnBomHlUvAjADUCGj-SyZQB5z8J4WDIyw-226crD8_-7cyiI1xlZjGVBFkBHj_Y5M1sUtB5guj3Dsnp7wWIgOIkHh1l18Lpsoch1h2BLPiqF0u2XcDmczaM1UOPA9A9lQ77D7WCdG-muMsb6Ocbh2pnP7oqO6JmV-b4w'} 
+                src={featuredProject.image ? (featuredProject.image.startsWith('http') ? featuredProject.image : `http://localhost:5001${featuredProject.image}`) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuDkDk-PJVOYZou13bYcNPkSJhIw1CmhrI6NY7t-H6GAoGJa2vG7ZDCFYPGo3DZTr8ZRRU08xuIwSxlK1dCWyAOt0AduRjimSl4YAypnUGtnBomHlUvAjADUCGj-SyZQB5z8J4WDIyw-226crD8_-7cyiI1xlZjGVBFkBHj_Y5M1sUtB5guj3Dsnp7wWIgOIkHh1l18Lpsoch1h2BLPiqF0u2XcDmczaM1UOPA9A9lQ77D7WCdG-muMsb6Ocbh2pnP7oqO6JmV-b4w'} 
               />
             </div>
             
