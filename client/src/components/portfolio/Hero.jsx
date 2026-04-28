@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { trackLinkClick } from '../../hooks/useAnalytics';
 
 const Hero = ({ profile }) => {
   return (
@@ -26,7 +27,7 @@ const Hero = ({ profile }) => {
             {profile?.bio || 'Software Engineer specializing in full-stack orchestration and minimalist design systems. I translate complex business requirements into elegant, high-performance codebases.'}
           </p>
           <div className="flex gap-8 items-center">
-            <a className="font-ui-element text-ui-element uppercase tracking-widest text-indigo-500 border-b border-indigo-500 pb-1 hover:text-indigo-400 hover:border-indigo-400 transition-colors" href={profile?.github || '#'} target="_blank" rel="noreferrer">
+            <a onClick={() => trackLinkClick('github')} className="font-ui-element text-ui-element uppercase tracking-widest text-indigo-500 border-b border-indigo-500 pb-1 hover:text-indigo-400 hover:border-indigo-400 transition-colors" href={profile?.github || '#'} target="_blank" rel="noreferrer">
               View GitHub
             </a>
             <a className="font-ui-element text-ui-element uppercase tracking-widest text-on-surface border-b border-on-surface pb-1 hover:text-indigo-400 hover:border-indigo-400 transition-colors" href="#projects">

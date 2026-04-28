@@ -1,4 +1,5 @@
 import React from 'react';
+import { trackLinkClick } from '../../hooks/useAnalytics';
 
 const Footer = ({ profile }) => {
   return (
@@ -9,10 +10,10 @@ const Footer = ({ profile }) => {
         </div>
 
         <div className="flex gap-12">
-          <a className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500 hover:text-indigo-500 transition-colors opacity-80 hover:opacity-100" href={profile?.github || '#'} target="_blank" rel="noreferrer">
+          <a onClick={() => trackLinkClick('github')} className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500 hover:text-indigo-500 transition-colors opacity-80 hover:opacity-100" href={profile?.github || '#'} target="_blank" rel="noreferrer">
             GitHub
           </a>
-          <a className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500 hover:text-indigo-500 transition-colors opacity-80 hover:opacity-100" href={profile?.linkedin || '#'} target="_blank" rel="noreferrer">
+          <a onClick={() => trackLinkClick('linkedin')} className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500 hover:text-indigo-500 transition-colors opacity-80 hover:opacity-100" href={profile?.linkedin || '#'} target="_blank" rel="noreferrer">
             LinkedIn
           </a>
         </div>

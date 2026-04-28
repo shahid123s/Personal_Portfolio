@@ -5,6 +5,7 @@ import ProjectsAdmin from './ProjectsAdmin';
 import ExperienceAdmin from './ExperienceAdmin';
 import ProfileAdmin from './ProfileAdmin';
 import MessagesAdmin from './MessagesAdmin';
+import Overview from './Overview';
 import api from '../../services/api';
 
 const Dashboard = () => {
@@ -53,12 +54,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-1 p-8 overflow-y-auto">
         <Routes>
-          <Route path="dashboard" element={
-            <div>
-              <h1 className="text-3xl font-h2 mb-4">Welcome, {admin.name}</h1>
-              <p className="text-on-surface-variant">Manage your portfolio content from the sidebar.</p>
-            </div>
-          } />
+          <Route path="dashboard" element={<Overview adminName={admin.name} />} />
           <Route path="projects" element={<ProjectsAdmin />} />
           <Route path="experience" element={<ExperienceAdmin />} />
           <Route path="profile" element={<ProfileAdmin />} />
