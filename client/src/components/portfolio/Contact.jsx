@@ -26,8 +26,8 @@ const Contact = ({ profile }) => {
   };
 
   return (
-    <section className="py-section-gap px-8 max-w-7xl mx-auto border-t border-surface-container-high" id="contact">
-      <div className="grid grid-cols-12 gap-8">
+    <section className="py-16 md:py-section-gap px-6 md:px-8 max-w-7xl mx-auto border-t border-surface-container-high" id="contact">
+      <div className="grid grid-cols-12 gap-6 md:gap-8">
         <motion.div 
           className="col-span-12 md:col-span-5"
           initial={{ opacity: 0, x: -30 }}
@@ -36,8 +36,8 @@ const Contact = ({ profile }) => {
           transition={{ duration: 0.6 }}
         >
           <span className="font-code-label text-code-label text-indigo-500 uppercase tracking-widest">03. Contact</span>
-          <h2 className="font-h2 text-h2 text-on-surface mt-8 mb-12">Let's build something substantial.</h2>
-          <p className="font-body-lg text-body-lg text-on-surface-variant mb-12">
+          <h2 className="font-h2 text-[28px] md:text-[48px] leading-tight text-on-surface mt-6 md:mt-8 mb-6 md:mb-12">Let's build something substantial.</h2>
+          <p className="font-body-lg text-[15px] md:text-[18px] text-on-surface-variant mb-8 md:mb-12">
             I am currently available for specialized contract work and architectural consulting.
           </p>
           
@@ -60,7 +60,7 @@ const Contact = ({ profile }) => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <form className="space-y-12" onSubmit={handleSubmit}>
+          <form className="space-y-8 md:space-y-12" onSubmit={handleSubmit}>
             <div className="group border-b border-surface-container-high focus-within:border-indigo-500 transition-colors py-4">
               <label className="block font-code-label text-[10px] uppercase text-zinc-500 mb-2">Your Name</label>
               <input

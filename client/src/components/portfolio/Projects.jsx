@@ -6,10 +6,10 @@ const Projects = ({ projects }) => {
   const otherProjects = projects?.filter(p => !p.featured) || [];
 
   return (
-    <section className="py-section-gap bg-surface-container-lowest" id="projects">
-      <div className="max-w-7xl mx-auto px-8">
-        <motion.div 
-          className="grid grid-cols-12 gap-8 mb-24 items-end"
+    <section className="py-16 md:py-section-gap bg-surface-container-lowest" id="projects">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <motion.div
+          className="grid grid-cols-12 gap-6 md:gap-8 mb-10 md:mb-24 items-end"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -17,20 +17,20 @@ const Projects = ({ projects }) => {
         >
           <div className="col-span-12 md:col-span-6">
             <span className="font-code-label text-code-label text-indigo-500 uppercase tracking-widest">02. Selected Work</span>
-            <h2 className="font-h2 text-h2 text-on-surface mt-8">Featured Case Study</h2>
+            <h2 className="font-h2 text-[32px] md:text-[48px] leading-tight text-on-surface mt-6 md:mt-8">Featured Case Study</h2>
           </div>
         </motion.div>
 
         {/* Featured Project */}
         {featuredProject && (
           <motion.div 
-            className="grid grid-cols-12 gap-0 border border-surface-container-high mb-section-gap group overflow-hidden rounded-2xl"
+            className="grid grid-cols-12 gap-0 border border-surface-container-high mb-10 md:mb-section-gap group overflow-hidden rounded-2xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            <div className="col-span-12 md:col-span-7 bg-surface-container h-[500px] overflow-hidden relative">
+            <div className="col-span-12 md:col-span-7 bg-surface-container h-[260px] md:h-[500px] overflow-hidden relative">
               <img 
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
                 alt={featuredProject.title} 
@@ -38,7 +38,7 @@ const Projects = ({ projects }) => {
               />
             </div>
             
-            <div className="col-span-12 md:col-span-5 p-12 flex flex-col justify-center">
+            <div className="col-span-12 md:col-span-5 p-6 md:p-12 flex flex-col justify-center">
               <div className="flex gap-2 mb-8 flex-wrap">
                 {featuredProject.techStack?.map((tech, i) => (
                   <span key={i} className="px-3 py-1 bg-surface-container-high text-on-surface font-code-label text-[10px] uppercase">
@@ -66,7 +66,7 @@ const Projects = ({ projects }) => {
           {otherProjects.map((project, index) => (
             <motion.div 
               key={project._id || index} 
-              className="col-span-12 md:col-span-4 p-10 border border-surface-container-high bg-surface-container-low hover:border-indigo-500 transition-colors relative flex flex-col h-full rounded-2xl"
+              className="col-span-12 md:col-span-4 p-7 md:p-10 border border-surface-container-high bg-surface-container-low hover:border-indigo-500 transition-colors relative flex flex-col h-full rounded-2xl"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
