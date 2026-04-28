@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
@@ -31,7 +32,18 @@ app.use('/api/profile', profileRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Portfolio API is running 🚀' });
+  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
+  
+  const healthInfo = {
+    status: dbStatus === 'Connected' ? 'OK' : 'ERROR',
+    message: 'Portfolio API is running 🚀',
+    database: dbStatus,
+    uptime: process.uptime(),
+    memoryUsage: process.memoryUsage(),
+    timestamp: new Date().toISOString(),
+  };
+  
+  res.status(dbStatus === 'Connected' ? 200 : 503).json(healthInfo);
 });
 
 // Handle 404 errors
