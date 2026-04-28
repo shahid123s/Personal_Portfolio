@@ -12,6 +12,7 @@ const authRoutes = require('./modules/auth/auth.routes');
 const projectRoutes = require('./modules/project/project.routes');
 const experienceRoutes = require('./modules/experience/experience.routes');
 const profileRoutes = require('./modules/profile/profile.routes');
+const contactRoutes = require('./modules/contact/contact.routes');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/experience', experienceRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
