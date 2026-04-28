@@ -1,13 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import ProjectsAdmin from './ProjectsAdmin';
 import ExperienceAdmin from './ExperienceAdmin';
 import ProfileAdmin from './ProfileAdmin';
+import MessagesAdmin from './MessagesAdmin';
+import api from '../../services/api';
 
 const Dashboard = () => {
   const { admin, loading, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const fetchUnread = async () => {
+      try {
+        const { data } = await api.get('/contact');
+        setUnreadCount(data.filter((m) => !m.isRead).length);
+      } catch {}
+    };
+    fetchUnread();
+  }, []);
 
   if (loading) return <div className="text-white">Loading admin...</div>;
   if (!admin) return <Navigate to="/admin/login" />;
@@ -27,6 +40,12 @@ const Dashboard = () => {
           <Link to="/admin/projects" className="block hover:text-indigo-400">Projects</Link>
           <Link to="/admin/experience" className="block hover:text-indigo-400">Experience</Link>
           <Link to="/admin/profile" className="block hover:text-indigo-400">Profile</Link>
+          <Link to="/admin/messages" className="flex items-center justify-between hover:text-indigo-400">
+            <span>Messages</span>
+            {unreadCount > 0 && (
+              <span className="bg-indigo-500 text-white text-xs px-2 py-0.5 rounded-full">{unreadCount}</span>
+            )}
+          </Link>
         </nav>
         <button onClick={handleLogout} className="mt-auto text-left text-error hover:text-red-400">Logout</button>
       </div>
@@ -43,6 +62,7 @@ const Dashboard = () => {
           <Route path="projects" element={<ProjectsAdmin />} />
           <Route path="experience" element={<ExperienceAdmin />} />
           <Route path="profile" element={<ProfileAdmin />} />
+          <Route path="messages" element={<MessagesAdmin />} />
         </Routes>
       </div>
     </div>
