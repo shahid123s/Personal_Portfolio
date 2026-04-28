@@ -1,9 +1,9 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Admin = require('./models/Admin');
-const Project = require('./models/Project');
-const Experience = require('./models/Experience');
-const Profile = require('./models/Profile');
+const Admin = require('./modules/admin/admin.model');
+const Project = require('./modules/project/project.model');
+const Experience = require('./modules/experience/experience.model');
+const Profile = require('./modules/profile/profile.model');
 
 const seed = async () => {
   await mongoose.connect(process.env.MONGODB_URI);

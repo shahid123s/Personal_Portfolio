@@ -6,20 +6,13 @@ const fs = require('fs');
 const Profile = require('../models/Profile');
 const authMiddleware = require('../middleware/auth.middleware');
 
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const uploadDir = path.join(__dirname, '../../uploads');
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'portfolio/profile',
-    allowedFormats: ['jpeg', 'png', 'jpg', 'webp'],
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => {
+    cb(null, 'profile-' + Date.now() + path.extname(file.originalname));
   },
 });
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
@@ -55,10 +48,11 @@ router.put('/', authMiddleware, upload.single('photo'), async (req, res) => {
     if (resume !== undefined) profile.resume = resume;
 
     if (req.file) {
-      if (profile.photo && profile.photo.includes('cloudinary')) {
-        // Optional: Extract public_id and delete old image from Cloudinary here
+      if (profile.photo) {
+        const oldPath = path.join(__dirname, '../..', profile.photo);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
-      profile.photo = req.file.path;
+      profile.photo = `/uploads/${req.file.filename}`;
     }
 
     await profile.save();
