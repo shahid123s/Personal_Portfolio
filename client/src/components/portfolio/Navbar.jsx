@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { trackLinkClick } from '../../hooks/useAnalytics';
 
 const Navbar = ({ profile }) => {
   const [activeSection, setActiveSection] = useState('work');
@@ -7,7 +8,7 @@ const Navbar = ({ profile }) => {
     const handleScroll = () => {
       const sections = ['work', 'experience', 'projects', 'contact'];
       let current = 'work';
-      
+
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -23,7 +24,7 @@ const Navbar = ({ profile }) => {
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -44,12 +45,12 @@ const Navbar = ({ profile }) => {
           {navLinks.map(link => {
             const isActive = activeSection === link.id;
             return (
-              <a 
+              <a
                 key={link.id}
                 className={`font-serif tracking-widest uppercase text-xs transition-colors duration-300 relative
                   ${isActive ? 'text-indigo-500' : 'text-zinc-400 hover:text-indigo-400'}
                   ${isActive ? "after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-indigo-500 after:rounded-full" : ''}
-                `} 
+                `}
                 href={`#${link.id}`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -61,7 +62,13 @@ const Navbar = ({ profile }) => {
             );
           })}
         </div>
-        <a className="px-6 py-2 bg-indigo-500 text-white font-ui-element text-ui-element rounded-2xl scale-95 active:scale-100 transition-transform" href={profile?.resume || '#'} target="_blank" rel="noreferrer">
+        <a
+          onClick={() => trackLinkClick('resume')}
+          className="px-6 py-2 bg-indigo-500 text-white font-ui-element text-ui-element rounded-2xl scale-95 active:scale-100 transition-transform"
+          href={profile?.resume || '#'}
+          target="_blank"
+          rel="noreferrer"
+        >
           Resume
         </a>
       </div>

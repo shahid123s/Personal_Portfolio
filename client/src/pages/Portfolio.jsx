@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
+import useAnalytics from '../hooks/useAnalytics';
 import Navbar from '../components/portfolio/Navbar';
 import Hero from '../components/portfolio/Hero';
 import Experience from '../components/portfolio/Experience';
@@ -9,6 +10,7 @@ import Contact from '../components/portfolio/Contact';
 import Footer from '../components/portfolio/Footer';
 
 const Portfolio = () => {
+  useAnalytics();
   const [data, setData] = useState({
     profile: null,
     experiences: [],
