@@ -37,8 +37,8 @@ const Navbar = ({ profile }) => {
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-800">
-      <div className="flex justify-between items-center max-w-7xl mx-auto px-8 h-20">
-        <div className="text-xl font-serif font-black text-white tracking-tighter">
+      <div className="flex justify-between items-center max-w-7xl mx-auto px-5 md:px-8 h-16 md:h-20">
+        <div className="text-base md:text-xl font-serif font-black text-white tracking-tighter truncate max-w-[180px] md:max-w-none">
           {profile?.name ? profile.name.toUpperCase() : 'DEVELOPER'}
         </div>
         <div className="hidden md:flex items-center gap-12">
